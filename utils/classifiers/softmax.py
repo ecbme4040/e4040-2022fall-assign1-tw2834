@@ -48,7 +48,51 @@ def softmax_loss_naive(W, X, y, reg):
     ############################################################################
     #                     START OF YOUR CODE                                   #
     ############################################################################
+    N = X.shape[0]
+    K = W.shape[1]
+    M = X.shape[1]
+    norm_val = 0
+    # one-hot encoding data
+    p = onehot(y, K)
+    l = []
+    # z = X@W calculation
+    z0 = [0]*N
+    for i in range(N):
+        for j in range(M):
+            z0[i]+= X[i][j]*W[j]
+    z = np.array(z0)
+    
+    # softmax Calculation 
+    h = np.exp(z - np.max(z))
+    for i in range(len(z)):
+        h[i] /= np.sum(h[i])
+    
+    # Gradient calculation
+    dw0 = [0]*M
+    diff = p-h
+    for i in range(M):
+        for j in range(N):
+            dw0[i]+=X.T[i][j]*diff[j]
+    dW = np.array(dw0)
+    dW = (-1/N)*dW
+    dW += reg*W
+        
+    # Cross entropy array
+    H =  -p*np.log(h)
+    
+    # l-2 norm Calculation    
+    for i in range(M):
+        norm_val +=W[i]**2
+        
+    loss = (1/N)*np.sum(H) + (reg/2)*norm_val
+#     z = np.array(z0)
 
+#     z = np.matmul(X, W)
+#     h = softmax(z)
+#     p = onehot(y, K)
+#     H = -p*np.log(q)
+#     loss = (1/N)*np.sum(H) + (reg/2)*(np.linalg.norm(W))**2
+#     dW = (-1/N)*np.matmul(X.T, (p - h)) + reg*W
     # raise NotImplementedError
     ############################################################################
     #                     END OF YOUR CODE                                     #
@@ -79,12 +123,17 @@ def softmax(x):
     ############################################################################
     #                     START OF YOUR CODE                                   #
     ############################################################################
+    
+    h = np.exp(x - np.max(x))
+    
+    for i in range(len(x)):
+        h[i] /= np.sum(h[i])
+        
 
     # raise NotImplementedError
     ############################################################################
     #                     END OF YOUR CODE                                     #
     ############################################################################
-
     return h
 
 
@@ -111,6 +160,8 @@ def onehot(x, K):
     ############################################################################
     #                     START OF YOUR CODE                                   #
     ############################################################################
+    
+    y[np.arange(N), x] = 1
 
     # raise NotImplementedError
     ############################################################################
@@ -142,7 +193,8 @@ def cross_entropy(p, q):
     ############################################################################
     #                     START OF YOUR CODE                                   #
     ############################################################################
-
+#     h = -1*np.matmul(p.T, np.log(q))
+    h = -p*np.log(q)
     # raise NotImplementedError
     ############################################################################
     #                     END OF YOUR CODE                                     #
@@ -182,7 +234,14 @@ def softmax_loss_vectorized(W, X, y, reg):
     ############################################################################
     #                     START OF YOUR CODE                                   #
     ############################################################################
-
+    N = X.shape[0]
+    K = W.shape[1]
+    z = np.matmul(X, W)
+    h = softmax(z)
+    p = onehot(y, K)
+    H = cross_entropy(p, h)
+    loss = (1/N)*np.sum(H) + (reg/2)*(np.linalg.norm(W))**2
+    dW = (-1/N)*np.matmul(X.T, (p - h)) + reg*W
     # raise NotImplementedError
     ############################################################################
     #                     END OF YOUR CODE                                     #
