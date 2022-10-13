@@ -51,7 +51,8 @@ class TwoLayerNet(object):
         # TODO: Feedforward                                                        #
         # NOTE: Use the methods defined for the layers in layer_utils.py           #
         ############################################################################
-
+        X = self.layer1.feedforward(X)
+        X = self.layer2.feedforward(X)
         #raise NotImplementedError
         ############################################################################
         #                          END OF YOUR CODE                                #
@@ -86,7 +87,9 @@ class TwoLayerNet(object):
         # mannually cache the parameters because it would be taken care of by the  #
         # functions in layer_utils.py                                              #
         ############################################################################
-
+        loss, dx = softmax_loss(scores, labels)
+        dx = self.layer2.backward(dx)
+        dx = self.layer1.backward(dx)
         #raise NotImplementedError
         ############################################################################
         #                          END OF YOUR CODE                                #
@@ -121,10 +124,13 @@ class TwoLayerNet(object):
 
         # fetch the velocities stored from previous iteration
         # if None (i.e. this is the first iteration), build velocities from scratch
+
         velocities = self.velocities or \
             {name: np.zeros_like(param) for name, param in params.items()}
 
         # Add L2 regularization:
+#         import pdb
+#         pdb.set_trace()
         reg = self.reg
         grads = {name: grad+ reg * params[name] for name, grad in grads.items()}
 
@@ -136,7 +142,11 @@ class TwoLayerNet(object):
         ############################################################################
         #                         START OF YOUR CODE                               #
         ############################################################################
-
+        momen = 0.5
+        for name, param in params.items():
+            velocities[name] = momen*velocities.get(name) - learning_rate*grads.get(name)
+            param = param + velocities.get(name)
+        
         #raise NotImplementedError
         ############################################################################
         #                          END OF YOUR CODE                                #
@@ -160,7 +170,8 @@ class TwoLayerNet(object):
         Returns: 
         - preds: (int) an array of length N
         """
-
+#         import pdb
+#         pdb.set_trace()
         preds = np.zeros(X.shape[0])
 
         ############################################################################
@@ -169,13 +180,17 @@ class TwoLayerNet(object):
         ############################################################################
         #                         START OF YOUR CODE                               #
         ############################################################################
-
+        from .softmax import softmax
+        
+        z = self.forward(X)
+        
+        preds = softmax(z)
         #raise NotImplementedError
         ############################################################################
         #                          END OF YOUR CODE                                #
         ############################################################################
 
-        return preds
+        return np.argmax(preds, axis=1)
 
     def save_model(self):
         """

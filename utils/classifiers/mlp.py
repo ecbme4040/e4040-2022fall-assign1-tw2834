@@ -53,7 +53,8 @@ class MLP:
         ############################################################################
         # TODO: Feedforward                                                        #
         ############################################################################
-
+        for layer in self.layers:
+            X = layer.feedforward(X)
         #raise NotImplementedError
         ############################################################################
         #                             END OF YOUR CODE                             #
@@ -84,7 +85,10 @@ class MLP:
         ############################################################################
         # TODO: Backpropogation                                                    #
         ############################################################################
-
+        loss, dx = softmax_loss(scores, labels)
+        for layer in self.layers.reverse():
+            dx = layer.backward(dx)
+            
         #raise NotImplementedError
         ############################################################################
         # TODO: Add L2 regularization                                              #
