@@ -29,13 +29,16 @@ INSTRUCTIONS for naming the students' solution repository for assignments with m
 .
 ├── Assignment1_intro.ipynb
 ├── README.md
+├── figures
+│   ├── tw2834_gcp_work_example_screenshot_1.png
+│   ├── tw2834_gcp_work_example_screenshot_2.png
+│   └── tw2834_gcp_work_example_screenshot_3.png
 ├── requirements.txt
 ├── task1-basic_classifiers.ipynb
 ├── task2-mlp_numpy.ipynb
 ├── task3-mlp_tensorflow.ipynb
 ├── task4-questions.ipynb
 └── utils
-    ├── cifar_utils.py
     ├── classifiers
     │   ├── basic_classifiers.py
     │   ├── logistic_regression.py
@@ -50,5 +53,5 @@ INSTRUCTIONS for naming the students' solution repository for assignments with m
     ├── layer_utils.py
     └── train_funcs.py
 
-5 directories, 22 files
+5 directories, 25 files
 ```
