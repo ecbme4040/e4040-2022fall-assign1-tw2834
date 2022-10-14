@@ -54,12 +54,18 @@ def logistic_regression_loss_naive(w, X, y, reg):
     ############################################################################
     N = X.shape[0]
     M = X.shape[1]
+    
+    # z = X@W 
     z0 = [0]*N
     for i in range(N):
         for j in range(M):
             z0[i]+= X[i][j]*w[j]
     z = np.array(z0)
+    
+    # logistic value
     h = 1/(1+np.exp(-z))
+    
+    # Gradient value
     dw0 = [0]*M
     diff = y-h
     for i in range(M):
@@ -68,10 +74,12 @@ def logistic_regression_loss_naive(w, X, y, reg):
     dw = np.array(dw0)
     dw = (-1/N)*dw
     dw += reg*w
+    
     # Regularization value
     norm_val = 0
     for i in range(M):
         norm_val +=w[i]**2
+    # Loss value
     loss = (-1/N)*np.sum(y * np.log(h) + (1 - y) * np.log(1 - h)) + (reg/2)*norm_val
     #raise NotImplementedError
     ############################################################################
@@ -151,9 +159,14 @@ def logistic_regression_loss_vectorized(w, X, y, reg):
     N = X.shape[0]
     
     z = np.matmul(X, w)
+    
+    # Sigmoid value
     h = sigmoid(z)
+    
+    # Gradient value
     dw = (-1/N)*np.matmul((y - h), X) + reg*w
-           
+    
+    # Loss value
     loss = (-1/N)*np.sum(y * np.log(h) + (1 - y) * np.log(1 - h)) + (reg/2)*(np.linalg.norm(w))**2
     
     #raise NotImplementedError

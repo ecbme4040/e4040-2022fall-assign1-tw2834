@@ -121,6 +121,9 @@ class MLP:
             for i, layer in enumerate(self.layers)
             for name, grad in layer.gradients.items()
         }
+        
+        velocities = self.velocities or \
+            {name: np.zeros_like(param) for name, param in params.items()}
 #         import pdb
 #         pdb.set_trace()
         # final layout: 
@@ -141,6 +144,9 @@ class MLP:
         ############################################################################
         for name, param in params.items():
             param -= learning_rate*grads.get(name)
+#         for name, param in params.items():
+#             velocities[name] = momentum*velocities.get(name) + grads.get(name)
+#             param = param - learning_rate*velocities.get(name)
 #         self.update_model((params, reg))
         # store the parameters for model saving
         self.params = params

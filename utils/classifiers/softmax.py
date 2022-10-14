@@ -55,19 +55,19 @@ def softmax_loss_naive(W, X, y, reg):
     # one-hot encoding data
     p = onehot(y, K)
     l = []
-    # z = X@W calculation
+    # z = X@W
     z0 = [0]*N
     for i in range(N):
         for j in range(M):
             z0[i]+= X[i][j]*W[j]
     z = np.array(z0)
     
-    # softmax Calculation 
+    # softmax value
     h = np.exp(z - np.max(z))
     for i in range(len(z)):
         h[i] /= np.sum(h[i])
     
-    # Gradient calculation
+    # Gradient value
     dw0 = [0]*M
     diff = p-h
     for i in range(M):
@@ -77,22 +77,21 @@ def softmax_loss_naive(W, X, y, reg):
     dW = (-1/N)*dW
     dW += reg*W
         
-    # Cross entropy array
-    H =  -p*np.log(h)
+    # Cross entropy
+    H0 = [0]*N
+    log_h = -np.log(h).T
+    for i in range(N):
+        for j in range(K):
+            H0[i] += p[i][j]*log_h[j][i] 
+    H = np.array(H0)
     
-    # l-2 norm Calculation    
+    # l-2 norm value    
     for i in range(M):
-        norm_val +=W[i]**2
-        
+        for j in range(K):
+            norm_val +=W[i][j]**2
+            
+    # Loss value
     loss = (1/N)*np.sum(H) + (reg/2)*norm_val
-#     z = np.array(z0)
-
-#     z = np.matmul(X, W)
-#     h = softmax(z)
-#     p = onehot(y, K)
-#     H = -p*np.log(q)
-#     loss = (1/N)*np.sum(H) + (reg/2)*(np.linalg.norm(W))**2
-#     dW = (-1/N)*np.matmul(X.T, (p - h)) + reg*W
     # raise NotImplementedError
     ############################################################################
     #                     END OF YOUR CODE                                     #
@@ -236,11 +235,21 @@ def softmax_loss_vectorized(W, X, y, reg):
     ############################################################################
     N = X.shape[0]
     K = W.shape[1]
+    
     z = np.matmul(X, W)
+    
+    # Softmax value
     h = softmax(z)
+    
+    # one-hot encoding data
     p = onehot(y, K)
+    
+    # Cross entropy
     H = cross_entropy(p, h)
+    # Loss value
     loss = (1/N)*np.sum(H) + (reg/2)*(np.linalg.norm(W))**2
+    
+    # Gradient value
     dW = (-1/N)*np.matmul(X.T, (p - h)) + reg*W
     # raise NotImplementedError
     ############################################################################
