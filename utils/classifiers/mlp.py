@@ -142,14 +142,14 @@ class MLP:
         ############################################################################
         #                            START OF YOUR CODE                            #
         ############################################################################
+
         for name, param in params.items():
-            param -= learning_rate*grads.get(name)
-#         for name, param in params.items():
-#             velocities[name] = momentum*velocities.get(name) + grads.get(name)
-#             param = param - learning_rate*velocities.get(name)
-#         self.update_model((params, reg))
-        # store the parameters for model saving
+            velocities[name] = momentum*velocities.get(name) + learning_rate*grads.get(name)
+            param -= velocities.get(name)
+
+        # Update the parameters and the velocities
         self.params = params
+        self.velocities = velocities
         #raise NotImplementedError
         ############################################################################
         #                             END OF YOUR CODE                             #
