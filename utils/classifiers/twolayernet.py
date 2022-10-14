@@ -142,11 +142,13 @@ class TwoLayerNet(object):
         ############################################################################
         #                         START OF YOUR CODE                               #
         ############################################################################
-        momen = 0.5
         for name, param in params.items():
-            velocities[name] = momen*velocities.get(name) - learning_rate*grads.get(name)
-            param = param + velocities.get(name)
-        
+            param -= learning_rate*grads.get(name)
+#         momen = 0.5
+#         for name, param in params.items():
+#             velocities[name] = momen*velocities.get(name) + learning_rate*grads.get(name)
+#             param = param - velocities.get(name)
+            
         #raise NotImplementedError
         ############################################################################
         #                          END OF YOUR CODE                                #
@@ -185,12 +187,14 @@ class TwoLayerNet(object):
         z = self.forward(X)
         
         preds = softmax(z)
+        preds = np.argmax(preds, axis=1)
+        
         #raise NotImplementedError
         ############################################################################
         #                          END OF YOUR CODE                                #
         ############################################################################
 
-        return np.argmax(preds, axis=1)
+        return preds
 
     def save_model(self):
         """

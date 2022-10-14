@@ -86,7 +86,9 @@ class MLP:
         # TODO: Backpropogation                                                    #
         ############################################################################
         loss, dx = softmax_loss(scores, labels)
-        for layer in self.layers.reverse():
+#         import pdb
+#         pdb.set_trace()
+        for layer in list(reversed(self.layers)):
             dx = layer.backward(dx)
             
         #raise NotImplementedError
@@ -119,6 +121,8 @@ class MLP:
             for i, layer in enumerate(self.layers)
             for name, grad in layer.gradients.items()
         }
+#         import pdb
+#         pdb.set_trace()
         # final layout: 
         # params = {
         #     'l1_W': xxx, 'l1_b': xxx, 
@@ -135,7 +139,11 @@ class MLP:
         ############################################################################
         #                            START OF YOUR CODE                            #
         ############################################################################
-
+        for name, param in params.items():
+            param -= learning_rate*grads.get(name)
+#         self.update_model((params, reg))
+        # store the parameters for model saving
+        self.params = params
         #raise NotImplementedError
         ############################################################################
         #                             END OF YOUR CODE                             #
@@ -162,7 +170,12 @@ class MLP:
         ############################################################################
         #                             START OF YOUR CODE                           #
         ############################################################################
-
+        from .softmax import softmax
+        
+        X = self.forward(X)
+        
+        predictions = softmax(X)
+        predictions = np.argmax(predictions, axis=1)
         #raise NotImplementedError
         ############################################################################
         #                             END OF YOUR CODE                             #
