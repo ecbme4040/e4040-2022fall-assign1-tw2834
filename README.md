@@ -4,6 +4,67 @@ The assignment is distributed as several jupyter notebooks and a number of direc
 # Students need to follow the instructions below, and they also need to edit the README.md such that key information is shown in it - right after this line
 TODO students to add text summarizing the key (high level) modifications that they did to solve the assignment
 
+# Summary of the modifications
+
+1. Task 1:
+     * Part-0(Basic):
+        * Changes in the task1-basic_classifiers.ipynb.
+        * Appended the bias dimension of ones in X_train, X_val, X_test, X_dev, X_train_binary, X_val_binary, X_dev_binary.
+        
+     * Part 1: Logistic Regression Classifier
+        * Changes in the ./utils/classifiers/logistic_regression.py
+        * Implemented logistic_regression_loss_naive function via regress loops
+        * Implemented logistic_regression_loss_vectorized function via matrix multiplications
+        * Implemented sigmoid function via numpy
+        
+     * Part 2: Softmax Classifier
+        * Changes in the ./utils/classifiers/softmax.py
+        * Implemented softmax_loss_naive function via regress loops
+        * Implemented softmax_loss_vectorized function via matrix multiplications
+        * Implemented softmax function via numpy
+        * Implemented onehot function via numpy
+        * Implemented cross_entropy function via matrix multiplications
+      
+      * Part 3: Train your classifiers
+        * Changes in the ./utils/classifiers/basic_classifiers.py
+        * Implemented Stochastic Gradient Descent (mini-batch)in the step function of the BasicClassifier class.
+        * Implemented logistic prediction in the predict function of the LogisticRegression class.
+        * Implemented softamx prediction in the predict function of the Softmax class.
+
+2. Task 2:
+     * Part 1: Basic Layers:
+        * Changes in the utils.layer_funcs.py
+        * Added all the required code for the affine, Relu, Softmax.
+        * Changes in the utils/layer_utils.py
+        * Added all the required code for the AffineLayer, DenseLayer.
+        
+     * Part 2: Two Layer Network
+        * Changes in the utils/classifiers/twolayernet.py
+        * Added all the required code for the TwoLayerNet such SGD in the step function.
+        * Accuracy of TwoLayerNet is around 0.8478
+        * Plotted the accuracy history vs Epoch
+        * Changes in the utils.classifiers.mlp.py
+        * Added all the required code for the MLP such SGD with momentum in the step function.
+        * Accuracy of TwoLayerNet is around 0.8728
+        * Plotted the accuracy history vs Epoch
+
+3. Task 3:
+     * Part 1: Tensorflow MLP
+        * Created 4-layer MLP with epoch = 100, hidden_dim1 = 256, hidden_dim2 = 128, hidden_dim3 = 64
+        * Accuracy of MLP is around 0.7839
+        * Build MLP with tf.keras.models.Sequential
+        
+     * Part 2: t-SNE 
+        * Visualized data that is passed through MLP via tsne with perplexity = 25
+        * Cost of t-SNE is around 0.1211
+        * Visualized data that is passed through MLP via tsne with perplexity = 50
+        * Cost of t-SNE is around 0.0778
+
+
+
+4. Task 4:
+        
+
 # Detailed instructions how to submit this assignment/homework:
 1. The assignment will be distributed as a github classroom assignment - as a special repository accessed through a link
 2. A students copy of the assignment gets created automatically with a special name - students have to rename the repo per instructions below
